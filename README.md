@@ -5,7 +5,7 @@ pratica proyectos ingenieria 2
 
 # Sprint 1
 cd sprint1
-## meter los paquetes pip necesatios
+## meter los paquetes pip necesarios
 pip install -r requirements.txt
 ## ejecutar el script
 python recomendador.py
