@@ -15,7 +15,7 @@ def validar():
         usuario = request.form['login']
         password = request.form['password']
         
-        client = MongoClient('mongodb+srv://jarabers:vzlqOjNzmsBdASty@clusterjorge.uesqo.mongodb.net/?retryWrites=true&w=majority&appName=ClusterJorge', tlsAllowInvalidCertificates=True) # Setting tlsAllowInvalidCertificates to True disables SSL certificate verification
+        client = MongoClient('mongodb+srv://jarabers:@#####@clusterjorge.uesqo.mongodb.net/?retryWrites=true&w=majority&appName=ClusterJorge', tlsAllowInvalidCertificates=True) # Setting tlsAllowInvalidCertificates to True disables SSL certificate verification
         db = client['travel']
         collection = db['usuarios']
         x = collection.find_one({'login': usuario, 'password': password})
