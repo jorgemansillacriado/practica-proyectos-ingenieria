@@ -11,7 +11,7 @@
     <script src="https://kit.fontawesome.com/d5268630b1.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>   
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>     
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 </head>
@@ -22,8 +22,26 @@
             <span class="navbar-brand mb-0 h1"><i class="fa-regular fa-user"></i> Bienvenido {{login}}</span>
         </div>
     </nav>
-
-<section class="pt-5 pb-5">
+            {% if favorito %}
+            <div class="row">
+                <div class="col-6">
+                    <h3 class="mb-3" style="color: white;">Te recomendamos </h3>
+                </div>
+                <div class="col-6 text-right">
+                    <i class="fa-solid fa-cart-shopping fa-3x" style="color:white"></i>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+              <img src="{{ url_for('static', filename = 'img/' + favorito["img"]) }}" style="height:300px;width: 250px;border-radius: 25px">
+                </div>
+                <div class="col-8">
+              <p style="color:white;font-family: Arial, Helvetica, sans-serif;font-size:12pt">
+                    {{ favorito["resumen"] }}</p>
+                </div>
+            </div>
+            {% endif %}
+    <section class="pt-5 pb-5">
         <div class="container">
             <div class="row">
                 <div class="col-6">
@@ -68,25 +86,22 @@
             </div>
         </div>
     </div>
-           </section>         
- 
-           <form id="enviar" method="POST" action="detalle">
+           </section>
+
+ <form id="enviar" method="POST" action="detalle">
     <input type="hidden" id="login" name="login" value="{{ login }}">
-    <input type="hidden" id="destino" name="destino" value="">  // ponemos value a vacion para que lo pille de javascript
+    <input type="hidden" id="destino" name="destino" value="">
   </form>
 
         
             
-
+</body>
+</html>
 
 <script>
     $(document).on("click", '.card', function(e) {
       event.preventDefault();
-      destino.value = e.target.id;   // el e recibe todos los elementos del componente que hice click por lo tanfo me dara el id
-      enviar.submit();  // envio el formulario
+      destino.value = e.target.id;
+      enviar.submit();
     });
 </script>
-
-
-</body>
-</html>
