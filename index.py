@@ -43,6 +43,43 @@ def chat():
 
     return render_template('home.html', respuesta=respuesta)
 
+@app.route("/detalle",methods=['POST','GET'])
+def detalle():
+    if request.method == 'POST':
+        usuario = request.form["login"]
+        destino = request.form["destino"]
+        client = MongoClient ('mongodb+srv://jarabers:vzlqOjNzmsBdASty@clusterjorge.uesqo.mongodb.net/?retryWrites=true&w=majority&appName=ClusterJorge', tlsAllowInvalidCertificates=True) 
+        db = client['travel']
+        collection = db['destinos']
+        x = collection.find_one({'nombre':destino})
+        print(x)
+        #obtengo el destino indicado por el usuario en la BD, por si no existe
+        collection2 = db['valoracion']
+        
+        x2 = collection2.find_one({'usuario':usuario})
+        print(x2)
+        val = x2['valoraciones'].get(destino,0)
+        print(destino)
+        print(val)
+        return render_template("detalle.html", login=usuario, destino=x, valoracion=val)
+
+@app.route("/actualizar_like",methods=['POST','GET'])
+def actualizar_like():
+    if request.method == 'POST':
+        valor = request.form["value"]
+        usuario = request.form["usuario"]
+        destino = request.form["destino"]
+        client = MongoClient ('mongodb+srv://jarabers:vzlqOjNzmsBdASty@clusterjorge.uesqo.mongodb.net/?retryWrites=true&w=majority&appName=ClusterJorge', tlsAllowInvalidCertificates=True) 
+        db = client['travel']
+        collection = db['valoracion']
+        x = collection.find_one({'usuario':usuario})
+        valoracion_nueva = x["valoraciones"]
+        print(valoracion_nueva)
+        valoracion_nueva[destino] = int(valor)
+        print(valoracion_nueva)
+        collection.update_one({'usuario':usuario},{"$set":{"valoraciones":valoracion_nueva}})
+        return("ok")
+
 """
 @app.route('/scrape')
 def scrape():
