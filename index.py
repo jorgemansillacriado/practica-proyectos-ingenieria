@@ -6,11 +6,15 @@ import requests
 from bs4 import BeautifulSoup
 import statistics
 import math
+from dotenv import load_dotenv
+import os
 
 
 # Try connecting without SSL verification (use with caution in production!)
 
 app = Flask(__name__)
+load_dotenv()
+MONGODB_URI = os.getenv('MONGODB_URI')
 
 @app.route("/",methods=['POST','GET'])
 def validar():
@@ -18,7 +22,7 @@ def validar():
         usuario = request.form["login"]
         password = request.form["password"]
 
-        client = MongoClient ('mongodb+srv://jarabers:vzlqOjNzmsBdASty@clusterjorge.uesqo.mongodb.net/?retryWrites=true&w=majority&appName=ClusterJorge', tlsAllowInvalidCertificates=True) 
+        client = MongoClient(MONGODB_URI, tlsAllowInvalidCertificates=True) 
         db = client['travel']
         collection = db['usuarios']
         x = collection.find_one({'login':usuario, 'password':password})
@@ -165,7 +169,7 @@ def detalle():
     if request.method == 'POST':
         usuario = request.form["login"]
         destino = request.form["destino"]
-        client = MongoClient ('mongodb+srv://jarabers:vzlqOjNzmsBdASty@clusterjorge.uesqo.mongodb.net/?retryWrites=true&w=majority&appName=ClusterJorge', tlsAllowInvalidCertificates=True) 
+        client = MongoClient(MONGODB_URI, tlsAllowInvalidCertificates=True) 
         db = client['travel']
         collection = db['destinos']
         x = collection.find_one({'nombre':destino})
@@ -186,7 +190,7 @@ def actualizar_like():
         valor = request.form["value"]
         usuario = request.form["usuario"]
         destino = request.form["destino"]
-        client = MongoClient ('mongodb+srv://jarabers:vzlqOjNzmsBdASty@clusterjorge.uesqo.mongodb.net/?retryWrites=true&w=majority&appName=ClusterJorge', tlsAllowInvalidCertificates=True) 
+        client = MongoClient(MONGODB_URI, tlsAllowInvalidCertificates=True) 
         db = client['travel']
         collection = db['valoracion']
         x = collection.find_one({'usuario':usuario})
@@ -254,7 +258,7 @@ def me_gustara():
     if request.method == 'POST':
         usuario = request.form["usuario"]
         destino = request.form["destino"]
-        client = MongoClient ('mongodb+srv://jarabers:vzlqOjNzmsBdASty@clusterjorge.uesqo.mongodb.net/?retryWrites=true&w=majority&appName=ClusterJorge', tlsAllowInvalidCertificates=True) 
+        client = MongoClient(MONGODB_URI, tlsAllowInvalidCertificates=True) 
         db = client['travel']
         collection = db['destinos']
         x = collection.find({})
