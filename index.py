@@ -303,3 +303,44 @@ if __name__ == '__main__':
 
 
 
+
+        for elem in x:
+            dest.append(elem['nombre'])
+        usuarios = []
+        collection = db['usuarios']
+        x2 = collection.find({})
+        for elem in x2:
+            usuarios.append(elem['login'])
+        collection = db['valoracion']
+        travel = list(collection.find())
+        m = calcular_similitudes()
+        l = usuarios_parecidos(usuario,0.7)
+        numerador = 0
+        denominador = 0
+        for i in l:
+            numerador += m[usuario][i] * (devolver_valoraciones(i).get(destino,0) - calcular_media_total(i))
+            denominador += m[usuario][i]
+        p = (numerador / denominador + calcular_media_total(usuario))
+        print(usuario)
+        print(p)
+        if p > 4:
+            return("<p style='color:white;font-family: Arial, Helvetica, sans-serif;font-size:20pt;'>Seguro</p>")
+        else:
+            return("<p style='color:white;font-family: Arial, Helvetica, sans-serif;font-size:20pt;'>No tanto</p>")
+
+"""
+@app.route('/scrape')
+def scrape():
+    url = 'https://news.ycombinator.com/'
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    titulos = [a.text for a in soup.select('.titleline a')]
+    return render_template('scrape.html', titulos=titulos)
+
+"""
+
+if __name__ == '__main__':
+    app.run(port=8000,debug=True)
+
+
+
