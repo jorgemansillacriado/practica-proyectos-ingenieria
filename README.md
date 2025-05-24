@@ -1,9 +1,12 @@
 # practica-proyectos-ingenieria
 pratica proyectos ingenieria 2 
 
-## tenemos dos Sprints uno para recomendador 
+## he añadido como seguridad variable en la cadena de conexion de mongdb para ello uso la siguiente libreria de python
+from dotenv import load_dotenv
+import os
 
-# Sprint 1
+meto en .env la cadena de conexion que no la subo a git ya que la meto en .gitignore y la uso en codigo como variable
+ client = MongoClient(MONGODB_URI, tlsAllowInvalidCertificates=True) 
 
 ## meter los paquetes pip necesarios
 pip install -r requirements.txt
