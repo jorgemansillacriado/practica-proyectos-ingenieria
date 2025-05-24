@@ -196,6 +196,92 @@ def actualizar_like():
         print(valoracion_nueva)
         collection.update_one({'usuario':usuario},{"$set":{"valoraciones":valoracion_nueva}})
         return("ok")
+    
+@app.route("/me_gustara",methods=['POST'])
+def me_gustara():
+    def calcular_media_total(usu):
+        val = devolver_valoraciones(usu)
+        return(statistics.mean(tuple(val.values()))) 
+    def usuarios_parecidos(usuario, g):
+        l = []
+        valoracion = m[usuario]
+        for key, value in valoracion.items():
+            if value >= g:
+                l.append(key)
+        return l
+
+    def devolver_valoraciones(usuario):
+        for i, elem in enumerate(travel):
+            if elem['usuario'] == usuario:
+                return(elem['valoraciones'])
+
+    def calcular_similitud(usuario1, usuario2):
+        val1 = devolver_valoraciones(usuario1)
+        val2 = devolver_valoraciones(usuario2)
+        r_a, r_b, r_a_med, r_b_med = calcularmedia(val1,val2)
+        numerador = 0
+        denominador1 = 0
+        denominador2 = 0
+        for i, elem in enumerate(r_a):
+            numerador += (elem - r_a_med) * (r_b[i] - r_b_med)
+            denominador1 += ((elem - r_a_med) ** 2)
+            denominador2 += ((r_b[i] - r_b_med) ** 2)
+        return(numerador/(math.sqrt(denominador1) * math.sqrt(denominador2)))
+    def calcular_similitudes():
+        matriz = {}
+        for i in range(0,len(usuarios)):
+            elem = {}
+            for j in range(0,len(usuarios)):
+                if i != j:
+                    elem[usuarios[j]] = calcular_similitud(usuarios[i],usuarios[j])
+            matriz[usuarios[i]] = elem
+        return(matriz)
+    def calcularmedia(valoracion1,valoracion2):
+        cont = 0
+        suma1 = 0
+        suma2 = 0
+        r_a = []
+        r_b = []
+        for elem in valoracion1:
+            if elem in valoracion2:
+                cont += 1
+                suma1 += valoracion1.get(elem)
+                suma2 += valoracion2.get(elem)
+                r_a.append(valoracion1.get(elem))
+                r_b.append(valoracion2.get(elem))
+        return(r_a, r_b, suma1/cont, suma2/cont)
+
+    if request.method == 'POST':
+        usuario = request.form["usuario"]
+        destino = request.form["destino"]
+        client = MongoClient ('mongodb+srv://jarabers:vzlqOjNzmsBdASty@clusterjorge.uesqo.mongodb.net/?retryWrites=true&w=majority&appName=ClusterJorge', tlsAllowInvalidCertificates=True) 
+        db = client['travel']
+        collection = db['destinos']
+        x = collection.find({})
+        dest = []
+        for elem in x:
+            dest.append(elem['nombre'])
+        usuarios = []
+        collection = db['usuarios']
+        x2 = collection.find({})
+        for elem in x2:
+            usuarios.append(elem['login'])
+        collection = db['valoracion']
+        travel = list(collection.find())
+        m = calcular_similitudes()
+        l = usuarios_parecidos(usuario,0.7)
+        numerador = 0
+        denominador = 0
+        for i in l:
+            numerador += m[usuario][i] * (devolver_valoraciones(i).get(destino,0) - calcular_media_total(i))
+            denominador += m[usuario][i]
+        p = (numerador / denominador + calcular_media_total(usuario))
+        print(usuario)
+        print(p)
+        if p > 4:
+            return("<p style='color:white;font-family: Arial, Helvetica, sans-serif;font-size:20pt;'>Seguro</p>")
+        else:
+            return("<p style='color:white;font-family: Arial, Helvetica, sans-serif;font-size:20pt;'>No tanto</p>")
 
 """
 @app.route('/scrape')

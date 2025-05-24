@@ -9,3 +9,4 @@ cd sprint1
 pip install -r requirements.txt
 ## ejecutar el script
 python recomendador.py
+

@@ -64,6 +64,12 @@
                  style="width:50px;height:25px">
               {% endfor %}
             </div> 
+            {% if not valoracion %}
+            <div class="row" id="zonap">
+                <button type="button" class="btn btn-primary" id="predecir">¿Me gustaria?</button>
+            </div>
+            {% endif %}
+           
 
         </div>
     </div>
@@ -73,6 +79,21 @@
 </html>
 
 <script>
+    $("#predecir").click(function(e){
+      event.preventDefault();
+      $.ajax({
+         url:"/me_gustara",
+         type:"POST",
+         data: {"usuario":"{{ login }}","destino":"{{ destino["nombre"] }}"},
+         success: function(response){
+          document.getElementById("zonap").innerHTML = response
+         },
+         error: function(error){
+         //console.log(error);
+         },
+        });      
+    });
+
     $(document).on("click", '[id^="like_"]', function(e) {
       event.preventDefault();
       likes = parseInt(e.target.id.split("_")[1]);
