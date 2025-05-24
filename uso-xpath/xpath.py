@@ -4,6 +4,9 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from pymongo import MongoClient
 import time
+from dotenv import load_dotenv
+import os
+
 driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 driver.get('https://www.booking.com/')
 time.sleep(3)
@@ -29,8 +32,8 @@ boton_cerrar[0].click()
                                     
 i = 1
 tarjeta = driver.find_elements(By.XPATH,"//div[@data-testid='property-card-container']")
+client = MongoClient(MONGODB_URI, tlsAllowInvalidCertificates=True) 
 
-client = MongoClient ('mongodb+srv://jarabers:vzlqOjNzmsBdASty@clusterjorge.uesqo.mongodb.net/?retryWrites=true&w=majority&appName=ClusterJorge', tlsAllowInvalidCertificates=True) 
 db = client['travel']
 collection = db['destinos']
 
