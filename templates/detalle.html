@@ -24,7 +24,7 @@
         <div class="row">
             <div class="col-6">
                 <div class="row m-2 p-2">
-                    <img src="{{ url_for('static', filename='img/' + destino["teaser"]) }}">
+                    <img src="{{ destino["teaser"]}}">
                 </div> 
                 <div class="row">
                     <p style="color:white;font-family: Arial, Helvetica, sans-serif;font-size:20pt;">
@@ -50,7 +50,7 @@
                     {{ destino["precio"] }}</font></p>  
             </div>
             <div class="row m-2 p-2 justify-content-end" > 
-              <img src="{{ url_for('static', filename='img/' + destino["img"]) }}" 
+              <img src="{{ destino["img"]}}" 
                style="height:540px;width: 450px;border-radius: 25px">
           </div>
             <div class="row">

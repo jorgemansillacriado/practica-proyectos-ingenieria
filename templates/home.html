@@ -33,7 +33,7 @@
             </div>
             <div class="row">
                 <div class="col-4">
-              <img src="{{ url_for('static', filename = 'img/' + favorito["img"]) }}" style="height:300px;width: 250px;border-radius: 25px">
+              <img src="{{ favorito["img"] }}" style="height:300px;width: 250px;border-radius: 25px">
                 </div>
                 <div class="col-8">
               <p style="color:white;font-family: Arial, Helvetica, sans-serif;font-size:12pt">
@@ -66,7 +66,7 @@
                             <div class="col-md-3 mb-3">
                                 <div class="card" style="height: 560px" id="{{ elem["nombre"] }}">
                                     <img class="img-fluid" alt="100%x280" id="{{ elem["nombre"] }}"
-                                        src="{{ url_for('static', filename = 'img/' + elem["img"])}}"
+                                        src="{{ elem["img"]}}"
                                         style="height: 300px;width: 280px;">
                                     <div class="card-body">
                                         <h4 class="card-title" id="{{ elem["nombre"] }}">{{ elem["nombre"] }}</h4>
